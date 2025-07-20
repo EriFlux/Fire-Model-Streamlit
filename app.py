@@ -1,17 +1,15 @@
-# app.py
 import streamlit as st
 import pandas as pd
 import joblib
 import folium
-from folium.plugins import MarkerCluster
 from streamlit_folium import folium_static
+from folium.plugins import MarkerCluster
 
 # Load model and features
 model = joblib.load("best_fire_risk_model.pkl")
 features = joblib.load("model_features.pkl")
 
 st.title("🔥 Sta. Cruz Fire Risk Dashboard")
-
 st.markdown("Predict fire outbreak risk, view hydrant maps, and track barangay risk scores.")
 
 # --- Section 1: Fire Risk Prediction ---
@@ -53,9 +51,7 @@ if submit:
 # --- Section 2: Map of Hydrants and Incidents ---
 st.header("🗺 Hydrant and Fire Incident Map")
 
-# Load merged data
 data = pd.read_csv("merged_fire_incidents_with_hydrants.csv")
-
 m = folium.Map(location=[14.28, 121.42], zoom_start=13)
 cluster = MarkerCluster().add_to(m)
 
@@ -71,7 +67,6 @@ folium_static(m)
 
 # --- Section 3: Risk Score Leaderboard ---
 st.header("📊 Risk Score by Barangay")
-
 risk_df = data.copy()
 risk_df['high_risk_area'] = risk_df['estimated_damage'].apply(lambda x: 1 if x >= 500000 else 0)
 
